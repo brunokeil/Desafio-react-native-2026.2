@@ -1,75 +1,79 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import { ScrollView, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+import { styles } from "./index.styles";
+import { Header } from "@/components/home/Header";
+import { HeroSection } from "@/components/home/HeroSection";
+import { SectionHeader } from "@/components/home/SectionHeader";
+import { ProductCard } from "@/components/home/ProductCard";
+import { LargeProductCard } from "@/components/home/LargeProductCard";
+import { AccordionItem } from "@/components/home/AccordionItem";
+import { PremiumCard } from "@/components/home/PremiumCard";
 
 export default function HomeScreen() {
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+    <SafeAreaView style={styles.container} edges={["top"]}>
+      <ScrollView
+        contentContainerStyle={styles.contentContainer}
+        showsVerticalScrollIndicator={false}
+      >
+        <Header />
+        
+        <HeroSection />
+
+        <View style={styles.section}>
+          <SectionHeader title="Em destaque" subtitle="Curadoria da temporada" />
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            style={styles.horizontalScroll}
+          >
+            <ProductCard title="Camisa Oficial I 2025" price="R$ 349,90" tag="NOVO" />
+            <ProductCard title="Camisa Oficial II 2025" price="R$ 349,90" tag="NOVO" />
+          </ScrollView>
+        </View>
+
+        <View style={styles.section}>
+          <SectionHeader title="Estreia da semana" subtitle="A camisa do momento" showSeeAll={false} />
+          <LargeProductCard 
+            title="Camisa Oficial I 2025" 
+            price="R$ 349,90" 
+            category="CAMISAS" 
+            tag="NOVO" 
+          />
+        </View>
+
+        <View style={styles.section}>
+          <SectionHeader title="Populares agora" subtitle="Escolhas da torcida" />
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            style={styles.horizontalScroll}
+          >
+            <ProductCard 
+              title="Short Oficial" 
+              price="R$ 199,90" 
+              tag="OFERTA" 
+              isSmall 
+            />
+            <ProductCard 
+              title="Camisa Retrô" 
+              price="R$ 289,90" 
+              isSmall 
+            />
+          </ScrollView>
+        </View>
+
+        <View style={styles.section}>
+          <SectionHeader title="Missão, Visão e Valores" subtitle="O que move a nação." showSeeAll={false} />
+          {["Missão", "Visão", "Valores"].map((item) => (
+            <AccordionItem key={item} title={item} />
+          ))}
+        </View>
+
+        <PremiumCard />
+        
+      </ScrollView>
+    </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
-});
