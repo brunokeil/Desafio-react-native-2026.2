@@ -4,9 +4,12 @@ import React from "react";
 import { HapticTab } from "@/components/HapticTab";
 import { Home, Search, Settings, ShoppingBag, User } from "lucide-react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useCartStore } from "@/store/cartStore";
 
 export default function TabLayout() {
   const insets = useSafeAreaInsets();
+  const cartItems = useCartStore((state) => state.items);
+  const cartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
   return (
     <Tabs
@@ -43,6 +46,8 @@ export default function TabLayout() {
         options={{
           title: "Sacola",
           tabBarIcon: ({ color }) => <ShoppingBag size={24} color={color} />,
+          tabBarBadge: cartCount > 0 ? cartCount : undefined,
+          tabBarBadgeStyle: { backgroundColor: '#E0232A', color: '#FFF' },
         }}
       />
       <Tabs.Screen

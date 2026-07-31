@@ -1,6 +1,7 @@
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, Alert } from 'react-native';
 import { Plus } from 'lucide-react-native';
 import { styles } from '@/app/(tabs)/index.styles';
+import { useCartStore } from '@/store/cartStore';
 
 interface Props {
   title: string;
@@ -10,6 +11,17 @@ interface Props {
 }
 
 export function LargeProductCard({ title, price, category, tag }: Props) {
+  const addItem = useCartStore((state) => state.addItem);
+
+  const handleAdd = () => {
+    addItem({
+      id: title, // Using title as ID for this mockup
+      title,
+      price,
+    });
+    Alert.alert('Sucesso', 'Produto adicionado à sacola!');
+  };
+
   return (
     <View style={styles.largeCard}>
       {tag && (
@@ -24,7 +36,7 @@ export function LargeProductCard({ title, price, category, tag }: Props) {
           <Text style={styles.largeCardTitle}>{title}</Text>
           <Text style={styles.largeCardPrice}>{price}</Text>
         </View>
-        <TouchableOpacity style={styles.addButton}>
+        <TouchableOpacity style={styles.addButton} onPress={handleAdd}>
           <Plus color="#000" size={20} />
         </TouchableOpacity>
       </View>
