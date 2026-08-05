@@ -1,21 +1,22 @@
-import { View, Text, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, Alert, Image } from 'react-native';
 import { Plus } from 'lucide-react-native';
 import { styles } from '@/app/(tabs)/index.styles';
 import { useCartStore } from '@/store/cartStore';
 
 interface Props {
+  id: string;
   title: string;
   price: string;
   category: string;
   tag?: string;
 }
 
-export function LargeProductCard({ title, price, category, tag }: Props) {
+export function LargeProductCard({ id, title, price, category, tag }: Props) {
   const addItem = useCartStore((state) => state.addItem);
 
   const handleAdd = () => {
     addItem({
-      id: title, // Using title as ID for this mockup
+      id,
       title,
       price,
     });
@@ -29,7 +30,11 @@ export function LargeProductCard({ title, price, category, tag }: Props) {
           <Text style={styles.tagBadgeText}>{tag}</Text>
         </View>
       )}
-      <View style={[styles.imagePlaceholder, { height: 200 }]} />
+      <Image 
+        source={require('@/assets/images/image.png')}
+        style={[styles.imagePlaceholder, { height: 200 }]}
+        resizeMode="cover"
+      />
       <Text style={styles.categoryText}>{category}</Text>
       <View style={styles.largeCardFooter}>
         <View>
