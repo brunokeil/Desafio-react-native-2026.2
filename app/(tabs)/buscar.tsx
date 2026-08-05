@@ -1,25 +1,48 @@
-import { useState } from "react";
-import { View, Text, TextInput, ScrollView, TouchableOpacity } from "react-native";
+import { useState, useEffect } from "react";
+import { View, Text, TextInput, ScrollView, TouchableOpacity, ActivityIndicator, Image, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Search, SlidersHorizontal, Plus } from "lucide-react-native";
 import { styles } from "./buscar.styles";
+import { useCartStore } from "@/store/cartStore";
 
 const CATEGORIES = ["Todos", "Camisas", "Agasalhos", "Shorts", "Acessórios"];
-const PRODUCTS = [
-  { id: "1", title: "Camisa Oficial I 2025", price: "R$ 349,90", tag: "NOVO", tagColor: "#E0232A" },
-  { id: "2", title: "Camisa Oficial II 2025", price: "R$ 349,90", tag: "NOVO", tagColor: "#E0232A" },
-  { id: "3", title: "Camisa Goleiro 2025", price: "R$ 329,90" },
-  { id: "4", title: "Short Oficial 2025", price: "R$ 199,90", tag: "OFERTA", tagColor: "#E0232A" },
-  { id: "5", title: "Camisa Retrô 1981", price: "R$ 289,90" },
-  { id: "6", title: "Agasalho Treino", price: "R$ 499,90", tag: "OFERTA", tagColor: "#E0232A" },
-  { id: "7", title: "Moletom Nação", price: "R$ 279,90" },
-  { id: "8", title: "Short Oficial Jogo", price: "R$ 179,90", tag: "OFERTA", tagColor: "#E0232A" },
-  { id: "9", title: "Boné Trucker Rubro-", price: "R$ 129,90" },
-];
 
 export default function BuscarScreen() {
   const [activeCategory, setActiveCategory] = useState("Todos");
   const [searchQuery, setSearchQuery] = useState("");
+  const [products, setProducts] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  
+  const addItem = useCartStore((state) => state.addItem);
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const fetchProducts = async () => {
+    try {
+      const response = await fetch('https://treinamentoapi.codejr.com.br/api/bruno/products');
+      const data = await response.json();
+      setProducts(data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleAddToCart = (product: any) => {
+    addItem({
+      id: String(product.id),
+      title: product.name,
+      price: 'R$ ' + product.price,
+    });
+    Alert.alert('Sucesso', 'Produto adicionado à sacola!');
+  };
+
+  const filteredProducts = products.filter(p => 
+    p.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <SafeAreaView style={styles.container} edges={["top"]}>
@@ -74,31 +97,34 @@ export default function BuscarScreen() {
         </View>
 
         <View style={styles.productsHeader}>
-          <Text style={styles.productsCount}>9 produtos</Text>
+          <Text style={styles.productsCount}>{filteredProducts.length} produtos</Text>
           <TouchableOpacity>
             <Text style={styles.sortText}>Ordenar</Text>
           </TouchableOpacity>
         </View>
 
-        <View style={styles.gridContainer}>
-          {PRODUCTS.map((product) => (
-            <View key={product.id} style={styles.gridCard}>
-              {product.tag && (
-                <View style={[styles.tagBadge, { backgroundColor: product.tagColor }]}>
-                  <Text style={styles.tagBadgeText}>{product.tag}</Text>
+        {isLoading ? (
+          <ActivityIndicator size="large" color="#E0232A" style={{ marginTop: 40 }} />
+        ) : (
+          <View style={styles.gridContainer}>
+            {filteredProducts.map((product) => (
+              <View key={product.id} style={styles.gridCard}>
+                <Image 
+                  source={require('@/assets/images/image.png')} 
+                  style={styles.imagePlaceholder}
+                  resizeMode="cover"
+                />
+                <Text style={styles.cardTitle} numberOfLines={2}>{product.name}</Text>
+                <View style={styles.cardFooter}>
+                  <Text style={styles.cardPrice}>R$ {product.price}</Text>
+                  <TouchableOpacity style={styles.addButton} onPress={() => handleAddToCart(product)}>
+                    <Plus color="#000" size={20} />
+                  </TouchableOpacity>
                 </View>
-              )}
-              <View style={styles.imagePlaceholder} />
-              <Text style={styles.cardTitle}>{product.title}</Text>
-              <View style={styles.cardFooter}>
-                <Text style={styles.cardPrice}>{product.price}</Text>
-                <TouchableOpacity style={styles.addButton}>
-                  <Plus color="#000" size={20} />
-                </TouchableOpacity>
               </View>
-            </View>
-          ))}
-        </View>
+            ))}
+          </View>
+        )}
       </ScrollView>
     </SafeAreaView>
   );
