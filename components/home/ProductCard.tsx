@@ -34,7 +34,7 @@ export function ProductCard({ id, title, price, tag, tagColor = "#E0232A", isSma
       <Image 
         source={require('@/assets/images/image.png')}
         style={[styles.imagePlaceholder, isSmall && { height: 120 }]}
-        resizeMode="cover"
+        resizeMode="contain"
       />
       <Text style={styles.cardTitle} numberOfLines={2}>{title}</Text>
       <View style={styles.cardFooter}>

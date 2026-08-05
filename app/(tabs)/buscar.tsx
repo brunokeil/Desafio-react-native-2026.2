@@ -112,7 +112,7 @@ export default function BuscarScreen() {
                 <Image 
                   source={require('@/assets/images/image.png')} 
                   style={styles.imagePlaceholder}
-                  resizeMode="cover"
+                  resizeMode="contain"
                 />
                 <Text style={styles.cardTitle} numberOfLines={2}>{product.name}</Text>
                 <View style={styles.cardFooter}>

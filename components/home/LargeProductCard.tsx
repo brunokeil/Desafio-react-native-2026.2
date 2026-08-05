@@ -33,7 +33,7 @@ export function LargeProductCard({ id, title, price, category, tag }: Props) {
       <Image 
         source={require('@/assets/images/image.png')}
         style={[styles.imagePlaceholder, { height: 200 }]}
-        resizeMode="cover"
+        resizeMode="contain"
       />
       <Text style={styles.categoryText}>{category}</Text>
       <View style={styles.largeCardFooter}>
