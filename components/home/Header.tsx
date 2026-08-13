@@ -1,11 +1,25 @@
 import { View, Text, TouchableOpacity } from 'react-native';
-import { Search } from 'lucide-react-native';
+import { Search, LogOut } from 'lucide-react-native';
 import { styles } from '@/app/(tabs)/index.styles';
+import { useRouter } from 'expo-router';
+import { useAuthStore } from '@/store/authStore';
 
 export function Header() {
+  const router = useRouter();
+  const { user, logout } = useAuthStore();
+
+  const handleLogout = () => {
+    logout();
+    router.replace('/conta');
+  };
+
+  const handleLogoPress = () => {
+    router.replace('/');
+  };
+
   return (
     <View style={styles.header}>
-      <View style={styles.headerLeft}>
+      <TouchableOpacity style={styles.headerLeft} onPress={handleLogoPress}>
         <View style={styles.logoCircle}>
           <Text style={styles.logoText}>C</Text>
         </View>
@@ -15,14 +29,21 @@ export function Header() {
             Rubro-Negra
           </Text>
         </Text>
-      </View>
+      </TouchableOpacity>
       <View style={styles.headerRight}>
         <TouchableOpacity style={styles.iconButton}>
           <Search color="#FFF" size={20} />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.loginButton}>
-          <Text style={styles.loginButtonText}>Entrar</Text>
-        </TouchableOpacity>
+        {user ? (
+          <TouchableOpacity style={[styles.loginButton, { backgroundColor: '#E0232A' }]} onPress={handleLogout}>
+            <LogOut color="#FFF" size={16} style={{ marginRight: 6 }} />
+            <Text style={[styles.loginButtonText, { color: '#FFF' }]}>Sair</Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity style={styles.loginButton} onPress={() => router.push('/conta')}>
+            <Text style={styles.loginButtonText}>Entrar</Text>
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );
