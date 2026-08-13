@@ -1,4 +1,7 @@
 import { create } from 'zustand';
+import { persist, createJSONStorage } from 'zustand/middleware';
+import * as SecureStore from 'expo-secure-store';
+import { Platform } from 'react-native';
 
 export interface User {
   id: number;
@@ -13,9 +16,41 @@ interface AuthStore {
   logout: () => void;
 }
 
-export const useAuthStore = create<AuthStore>((set) => ({
-  user: null,
-  token: null,
-  login: (user, token) => set({ user, token }),
-  logout: () => set({ user: null, token: null }),
-}));
+// Custom storage para o Zustand usar o expo-secure-store
+const secureStorage = {
+  getItem: async (name: string): Promise<string | null> => {
+    if (Platform.OS === 'web') {
+      return localStorage.getItem(name);
+    }
+    return await SecureStore.getItemAsync(name);
+  },
+  setItem: async (name: string, value: string): Promise<void> => {
+    if (Platform.OS === 'web') {
+      localStorage.setItem(name, value);
+    } else {
+      await SecureStore.setItemAsync(name, value);
+    }
+  },
+  removeItem: async (name: string): Promise<void> => {
+    if (Platform.OS === 'web') {
+      localStorage.removeItem(name);
+    } else {
+      await SecureStore.deleteItemAsync(name);
+    }
+  },
+};
+
+export const useAuthStore = create<AuthStore>()(
+  persist(
+    (set) => ({
+      user: null,
+      token: null,
+      login: (user, token) => set({ user, token }),
+      logout: () => set({ user: null, token: null }),
+    }),
+    {
+      name: 'auth-storage', // chave usada no storage
+      storage: createJSONStorage(() => secureStorage),
+    }
+  )
+);

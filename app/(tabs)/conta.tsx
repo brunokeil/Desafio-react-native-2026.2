@@ -16,10 +16,16 @@ export default function ContaScreen() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState(''); // Novo estado
 
   const handleSubmit = async () => {
-    if (!email || !password || (!isLoginView && !name)) {
+    if (!email || !password || (!isLoginView && (!name || !confirmPassword))) {
       Alert.alert('Erro', 'Preencha todos os campos.');
+      return;
+    }
+
+    if (!isLoginView && password !== confirmPassword) {
+      Alert.alert('Erro', 'As senhas não coincidem.');
       return;
     }
 
@@ -42,12 +48,13 @@ export default function ContaScreen() {
       
       const data = await response.json();
       
-      if (response.ok && (data.status === 200 || data.status === 201)) {
+      if (response.ok && (data.status === 200 || data.status === 201 || data.token)) {
         login(data.user, data.token);
         // Reset form
         setName('');
         setEmail('');
         setPassword('');
+        setConfirmPassword('');
       } else {
         Alert.alert('Erro', data.message || 'Ocorreu um erro. Tente novamente.');
       }
@@ -129,6 +136,20 @@ export default function ContaScreen() {
               onChangeText={setPassword}
             />
           </View>
+          
+          {!isLoginView && (
+            <View style={styles.inputContainer}>
+              <Text style={styles.label}>Confirmar Senha</Text>
+              <TextInput
+                style={styles.input}
+                placeholder="Repita sua senha"
+                placeholderTextColor="#666"
+                secureTextEntry
+                value={confirmPassword}
+                onChangeText={setConfirmPassword}
+              />
+            </View>
+          )}
           
           <TouchableOpacity 
             style={[styles.button, isLoading && styles.buttonDisabled]} 
