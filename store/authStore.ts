@@ -13,7 +13,7 @@ interface AuthStore {
   user: User | null;
   token: string | null;
   login: (user: User, token: string) => void;
-  logout: () => void;
+  logout: () => Promise<void>;
 }
 
 // Custom storage para o Zustand usar o expo-secure-store
@@ -42,11 +42,28 @@ const secureStorage = {
 
 export const useAuthStore = create<AuthStore>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       user: null,
       token: null,
       login: (user, token) => set({ user, token }),
-      logout: () => set({ user: null, token: null }),
+      logout: async () => {
+        const { token } = get();
+        if (token) {
+          try {
+            await fetch('https://treinamentoapi.codejr.com.br/api/logout', {
+              method: 'POST',
+              headers: {
+                'Authorization': `Bearer ${token}`,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+              }
+            });
+          } catch (error) {
+            console.error('Erro ao revogar token na API:', error);
+          }
+        }
+        set({ user: null, token: null });
+      },
     }),
     {
       name: 'auth-storage', // chave usada no storage
