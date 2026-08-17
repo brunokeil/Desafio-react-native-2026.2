@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Linking } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Mail, Phone, MapPin, AtSign, Users } from 'lucide-react-native';
-import { styles } from "@/styles/.styles";
+import { styles } from "@/styles/contato.styles";
 
 export default function ContatoScreen() {
   const handlePress = (url: string) => {

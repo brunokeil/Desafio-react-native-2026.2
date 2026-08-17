@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
-import { styles } from "@/styles/.styles";
+import { styles } from "@/styles/login.styles";
 import { useAuthStore } from '@/store/authStore';
 
 const API_URL = 'https://treinamentoapi.codejr.com.br/api';

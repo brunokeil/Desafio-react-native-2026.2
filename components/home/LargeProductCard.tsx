@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity, Alert, Image } from 'react-native';
 import { Plus } from 'lucide-react-native';
-import { styles } from "@/styles/.styles";
+import { styles } from "@/styles/index.styles";
 import { useCartStore } from '@/store/cartStore';
 
 interface Props {
