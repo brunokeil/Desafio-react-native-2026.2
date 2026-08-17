@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { styles } from '@/app/(tabs)/index.styles';
+import { styles } from '@/app/(tabs)/_index.styles';
 
 export function PremiumCard() {
   return (

@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity } from 'react-native';
-import { styles } from '@/app/(tabs)/index.styles';
+import { styles } from '@/app/(tabs)/_index.styles';
 
 interface Props {
   title: string;
