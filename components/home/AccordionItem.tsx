@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, LayoutAnimation, Platform, UIManager } from 'react-native';
 import { ChevronDown, ChevronUp } from 'lucide-react-native';
-import { styles } from '@/app/(tabs)/_index.styles';
+import { styles } from "@/styles/.styles";
 
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true);

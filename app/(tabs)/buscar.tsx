@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { View, Text, TextInput, ScrollView, TouchableOpacity, ActivityIndicator, Image, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Search, SlidersHorizontal, Plus } from "lucide-react-native";
-import { styles } from "./_buscar.styles";
+import { styles } from "@/styles/.styles";
 import { useCartStore } from "@/store/cartStore";
 
 const CATEGORIES = ["Todos", "Camisas", "Agasalhos", "Shorts", "Acessórios"];

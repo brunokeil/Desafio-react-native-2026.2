@@ -1,7 +1,7 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Play } from 'lucide-react-native';
-import { styles } from '@/app/(tabs)/_index.styles';
+import { styles } from "@/styles/.styles";
 
 export function HeroSection() {
   return (

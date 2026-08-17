@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity } from 'react-native';
 import { Search, LogOut } from 'lucide-react-native';
-import { styles } from '@/app/(tabs)/_index.styles';
+import { styles } from "@/styles/.styles";
 import { useRouter } from 'expo-router';
 import { useAuthStore } from '@/store/authStore';
 

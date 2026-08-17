@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, Alert, Modal, TextInput, ActivityIndicator, RefreshControl } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Edit2, Trash2, ShieldAlert } from 'lucide-react-native';
-import { styles } from './_painel.styles';
+import { styles } from "@/styles/.styles";
 import { useAuthStore } from '@/store/authStore';
 import { useFocusEffect, useRouter } from 'expo-router';
 
