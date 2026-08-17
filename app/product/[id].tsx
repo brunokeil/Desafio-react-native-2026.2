@@ -1,6 +1,6 @@
 import { View, Text, Image, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ChevronLeft, ShoppingBag } from 'lucide-react-native';
 import { useEffect, useState } from 'react';
 import { styles } from '@/styles/product.styles';
@@ -12,6 +12,7 @@ export default function ProductScreen() {
   const router = useRouter();
   const [product, setProduct] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const insets = useSafeAreaInsets();
   
   const addItem = useCartStore(state => state.addItem);
   const showToast = useToastStore(state => state.showToast);
@@ -72,7 +73,7 @@ export default function ProductScreen() {
   }
 
   return (
-    <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
+    <SafeAreaView style={styles.container} edges={['top']}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
           <ChevronLeft color="#FFF" size={24} />
@@ -103,7 +104,7 @@ export default function ProductScreen() {
         </View>
       </ScrollView>
 
-      <View style={styles.footer}>
+      <View style={[styles.footer, { paddingBottom: insets.bottom > 0 ? insets.bottom + 16 : 20 }]}>
         <TouchableOpacity style={styles.addToCartButton} onPress={handleAddToCart}>
           <ShoppingBag color="#FFF" size={20} />
           <Text style={styles.addToCartText}>Adicionar à Sacola</Text>
