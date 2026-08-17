@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, ScrollView, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, Alert, Image, Linking } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Minus, Plus, Trash2, ShoppingBag } from 'lucide-react-native';
 import { styles } from "@/styles/sacola.styles";
@@ -15,9 +15,56 @@ export default function SacolaScreen() {
     }, 0);
   }, [items]);
 
-  const handleCheckout = () => {
-    Alert.alert('Sucesso', 'Compra finalizada com sucesso!');
-    clearCart();
+  const handleCheckout = async () => {
+    if (items.length === 0) return;
+
+    try {
+      const pagbankItems = items.map(item => {
+        const priceValue = parseFloat(item.price.replace('R$', '').trim().replace('.', '').replace(',', '.'));
+        return {
+          reference_id: String(item.id),
+          name: item.title,
+          quantity: item.quantity,
+          unit_amount: Math.round(priceValue * 100)
+        };
+      });
+
+      const payload = {
+        reference_id: `order_${Date.now()}`,
+        customer: {
+          name: "Cliente Teste",
+          email: "teste@teste.com",
+          tax_id: "12345678909",
+        },
+        items: pagbankItems,
+      };
+
+      const response = await fetch('https://sandbox.api.pagseguro.com/checkouts', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer 18704fd4-512a-46d6-87f8-98688b019feaac8d73844759a0d5e6eca53b705629ba3024-9fcc-4263-8101-b04635cd46cc'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await response.json();
+      
+      if (data.links) {
+        const paymentUrl = data.links.find((l: any) => l.rel === 'PAY')?.href;
+        if (paymentUrl) {
+          Linking.openURL(paymentUrl);
+          clearCart();
+          return;
+        }
+      }
+      
+      Alert.alert('Erro', 'Não foi possível gerar o link de pagamento.');
+
+    } catch (error) {
+      console.error(error);
+      Alert.alert('Erro', 'Ocorreu um erro ao processar o checkout.');
+    }
   };
 
   return (
@@ -44,7 +91,11 @@ export default function SacolaScreen() {
           <ScrollView style={styles.cartList} showsVerticalScrollIndicator={false}>
             {items.map((item) => (
               <View key={item.id} style={styles.cartItem}>
-                <View style={styles.itemImagePlaceholder} />
+                <Image 
+                  source={require('@/assets/images/image.png')} 
+                  style={styles.itemImagePlaceholder} 
+                  resizeMode="contain" 
+                />
                 <View style={styles.itemDetails}>
                   <View>
                     <Text style={styles.itemTitle} numberOfLines={2}>{item.title}</Text>
