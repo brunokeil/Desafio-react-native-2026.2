@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { ScrollView, View, ActivityIndicator } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import { styles } from "./index.styles";
+import { styles } from "./_index.styles";
 import { Header } from "@/components/home/Header";
 import { HeroSection } from "@/components/home/HeroSection";
 import { SectionHeader } from "@/components/home/SectionHeader";

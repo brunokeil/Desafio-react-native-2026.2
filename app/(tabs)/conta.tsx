@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LogOut } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
-import { styles } from './conta.styles';
+import { styles } from './_conta.styles';
 import { useAuthStore } from '@/store/authStore';
 
 export default function ContaScreen() {

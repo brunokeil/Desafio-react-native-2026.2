@@ -1,7 +1,7 @@
 import { View, Text, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Minus, Plus, Trash2, ShoppingBag } from 'lucide-react-native';
-import { styles } from './sacola.styles';
+import { styles } from './_sacola.styles';
 import { useCartStore } from '@/store/cartStore';
 import { useMemo } from 'react';
 
