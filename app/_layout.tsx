@@ -5,6 +5,7 @@ import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { Toast } from '@/components/ui/Toast';
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -16,8 +17,6 @@ export default function RootLayout() {
     // Async font loading only occurs in development.
     return null;
   }
-
-import { Toast } from '@/components/ui/Toast';
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
