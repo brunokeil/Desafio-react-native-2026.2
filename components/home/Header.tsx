@@ -10,7 +10,7 @@ export function Header() {
 
   const handleLogout = async () => {
     await logout();
-    router.replace('/conta');
+    router.replace('/login');
   };
 
   const handleLogoPress = () => {
@@ -40,7 +40,7 @@ export function Header() {
             <Text style={[styles.loginButtonText, { color: '#FFF' }]}>Sair</Text>
           </TouchableOpacity>
         ) : (
-          <TouchableOpacity style={styles.loginButton} onPress={() => router.push('/conta')}>
+          <TouchableOpacity style={styles.loginButton} onPress={() => router.push('/login')}>
             <Text style={styles.loginButtonText}>Entrar</Text>
           </TouchableOpacity>
         )}

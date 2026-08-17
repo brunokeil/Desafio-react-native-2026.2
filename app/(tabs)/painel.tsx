@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Edit2, Trash2, ShieldAlert } from 'lucide-react-native';
 import { styles } from './painel.styles';
 import { useAuthStore } from '@/store/authStore';
-import { useFocusEffect } from 'expo-router';
+import { useFocusEffect, useRouter } from 'expo-router';
 
 const API_URL = 'https://treinamentoapi.codejr.com.br/api/bruno/products';
 
@@ -17,6 +17,7 @@ interface Product {
 }
 
 export default function PainelScreen() {
+  const router = useRouter();
   const { user, token } = useAuthStore();
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -154,18 +155,14 @@ export default function PainelScreen() {
     );
   };
 
+  useEffect(() => {
+    if (!user || !token) {
+      router.replace('/login');
+    }
+  }, [user, token]);
+
   if (!user || !token) {
-    return (
-      <SafeAreaView style={styles.container} edges={["top"]}>
-        <View style={styles.notLoggedInContainer}>
-          <ShieldAlert color="#E0232A" size={64} style={{ marginBottom: 24 }} />
-          <Text style={styles.notLoggedInText}>Acesso Restrito</Text>
-          <Text style={styles.notLoggedInSubtext}>
-            Você precisa estar autenticado para acessar o painel de administração. Vá até a aba "Conta" para fazer login.
-          </Text>
-        </View>
-      </SafeAreaView>
-    );
+    return null;
   }
 
   return (

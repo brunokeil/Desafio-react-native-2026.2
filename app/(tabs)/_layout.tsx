@@ -2,7 +2,7 @@ import { Tabs } from "expo-router";
 import React from "react";
 
 import { HapticTab } from "@/components/HapticTab";
-import { Home, Search, Settings, ShoppingBag, User } from "lucide-react-native";
+import { Home, Search, Settings, ShoppingBag, User, Phone } from "lucide-react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useCartStore } from "@/store/cartStore";
 
@@ -58,9 +58,16 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="contato"
+        options={{
+          title: "Contato",
+          tabBarIcon: ({ color }) => <Phone size={24} color={color} />,
+        }}
+      />
+      <Tabs.Screen
         name="conta"
         options={{
-          title: "Conta",
+          title: "Perfil",
           tabBarIcon: ({ color }) => <User size={24} color={color} />,
         }}
       />
