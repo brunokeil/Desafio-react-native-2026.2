@@ -169,6 +169,7 @@ export const styles = StyleSheet.create({
     borderColor: "#222",
   },
   imagePlaceholder: {
+    width: "100%",
     height: 160,
     backgroundColor: "#222",
     borderRadius: 8,

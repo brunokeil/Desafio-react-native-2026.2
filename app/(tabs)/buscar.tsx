@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
-import { View, Text, TextInput, ScrollView, TouchableOpacity, ActivityIndicator, Image, Alert } from "react-native";
+import { View, Text, TextInput, ScrollView, TouchableOpacity, ActivityIndicator, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Search, SlidersHorizontal, Plus } from "lucide-react-native";
 import { styles } from "@/styles/buscar.styles";
 import { useCartStore } from "@/store/cartStore";
+import { useToastStore } from "@/store/toastStore";
+import { useRouter } from "expo-router";
 
 const CATEGORIES = ["Todos", "Camisas", "Agasalhos", "Shorts", "Acessórios"];
 
@@ -14,6 +16,8 @@ export default function BuscarScreen() {
   const [isLoading, setIsLoading] = useState(true);
   
   const addItem = useCartStore((state) => state.addItem);
+  const showToast = useToastStore((state) => state.showToast);
+  const router = useRouter();
 
   useEffect(() => {
     fetchProducts();
@@ -37,7 +41,7 @@ export default function BuscarScreen() {
       title: product.name,
       price: 'R$ ' + product.price,
     });
-    Alert.alert('Sucesso', 'Produto adicionado à sacola!');
+    showToast('Produto adicionado à sacola!');
   };
 
   const filteredProducts = products.filter(p => 
@@ -108,7 +112,12 @@ export default function BuscarScreen() {
         ) : (
           <View style={styles.gridContainer}>
             {filteredProducts.map((product) => (
-              <View key={product.id} style={styles.gridCard}>
+              <TouchableOpacity 
+                key={product.id} 
+                style={styles.gridCard}
+                activeOpacity={0.9}
+                onPress={() => router.push(`/product/${product.id}`)}
+              >
                 <Image 
                   source={require('@/assets/images/image.png')} 
                   style={styles.imagePlaceholder}
@@ -121,7 +130,7 @@ export default function BuscarScreen() {
                     <Plus color="#000" size={20} />
                   </TouchableOpacity>
                 </View>
-              </View>
+              </TouchableOpacity>
             ))}
           </View>
         )}

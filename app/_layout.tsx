@@ -17,13 +17,17 @@ export default function RootLayout() {
     return null;
   }
 
+import { Toast } from '@/components/ui/Toast';
+
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
+        <Stack.Screen name="product/[id]" options={{ headerShown: false, presentation: 'modal' }} />
       </Stack>
       <StatusBar style="auto" />
+      <Toast />
     </ThemeProvider>
   );
 }

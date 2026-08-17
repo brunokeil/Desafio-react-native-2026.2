@@ -143,6 +143,7 @@ export const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   imagePlaceholder: {
+    width: "100%",
     height: 160,
     backgroundColor: "#222",
     borderRadius: 8,

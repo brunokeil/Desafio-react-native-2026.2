@@ -1,7 +1,9 @@
-import { View, Text, TouchableOpacity, Alert, Image } from 'react-native';
+import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { Plus } from 'lucide-react-native';
 import { styles } from "@/styles/index.styles";
 import { useCartStore } from '@/store/cartStore';
+import { useToastStore } from '@/store/toastStore';
+import { useRouter } from 'expo-router';
 
 interface Props {
   id: string;
@@ -13,6 +15,8 @@ interface Props {
 
 export function LargeProductCard({ id, title, price, category, tag }: Props) {
   const addItem = useCartStore((state) => state.addItem);
+  const showToast = useToastStore(state => state.showToast);
+  const router = useRouter();
 
   const handleAdd = () => {
     addItem({
@@ -20,11 +24,15 @@ export function LargeProductCard({ id, title, price, category, tag }: Props) {
       title,
       price,
     });
-    Alert.alert('Sucesso', 'Produto adicionado à sacola!');
+    showToast('Produto adicionado à sacola!');
   };
 
   return (
-    <View style={styles.largeCard}>
+    <TouchableOpacity 
+      style={styles.largeCard}
+      activeOpacity={0.9}
+      onPress={() => router.push(`/product/${id}`)}
+    >
       {tag && (
         <View style={styles.tagBadge}>
           <Text style={styles.tagBadgeText}>{tag}</Text>
@@ -45,6 +53,6 @@ export function LargeProductCard({ id, title, price, category, tag }: Props) {
           <Plus color="#000" size={20} />
         </TouchableOpacity>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
