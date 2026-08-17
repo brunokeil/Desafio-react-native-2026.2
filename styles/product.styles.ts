@@ -26,7 +26,7 @@ export const styles = StyleSheet.create({
     fontWeight: '600',
   },
   contentContainer: {
-    paddingBottom: 100, // Espaço para o footer fixo
+    paddingBottom: 24, 
   },
   imageContainer: {
     width: '100%',
@@ -77,10 +77,6 @@ export const styles = StyleSheet.create({
     marginTop: 40,
   },
   footer: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
     padding: 20,
     backgroundColor: '#0A0A0A',
     borderTopWidth: 1,
